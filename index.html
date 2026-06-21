@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Musa | Web Developer Portfolio</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        dark: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                            950: '#030712',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #030712;
+            overflow-x: hidden;
+        }
+        
+        /* Glassmorphism utility classes */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.45);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .glass-nav {
+            background: rgba(3, 7, 18, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #030712;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #334155;
+        }
+
+        /* Glowing background effects */
+        .glow-sphere {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(130px);
+            opacity: 0.15;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Typing cursor animation */
+        .cursor-blink::after {
+            content: '|';
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="text-slate-100 antialiased relative min-h-screen">
+
+    <!-- Glowing Accents -->
+    <div class="glow-sphere bg-indigo-500 w-[400px] h-[400px] top-12 left-[-100px]"></div>
+    <div class="glow-sphere bg-cyan-500 w-[500px] h-[500px] bottom-20 right-[-100px]"></div>
+    <div class="glow-sphere bg-purple-500 w-[300px] h-[300px] top-[40%] left-[30%]"></div>
+
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 left-0 w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 sm:h-20">
+                <div class="flex-shrink-0">
+                    <a href="#" class="text-xl sm:text-2xl font-black tracking-wider bg-gradient-to-r from-cyan-400 to-indigo-500 bg-clip-text text-transparent">
+                        &lt;MUSA.DEV /&gt;
+                    </a>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8 text-sm font-medium">
+                    <a href="#hero" class="text-slate-300 hover:text-cyan-400 transition-colors py-2">Home</a>
+                    <a href="#about" class="text-slate-300 hover:text-cyan-400 transition-colors py-2">About</a>
+                    <a href="#skills" class="text-slate-300 hover:text-cyan-400 transition-colors py-2">Skills</a>
+                    <a href="#projects" class="text-slate-300 hover:text-cyan-400 transition-colors py-2">Projects</a>
+                    <a href="#contact" class="text-slate-300 hover:text-cyan-400 transition-colors py-2">Contact</a>
+                </div>
+
+                <!-- CTA Button (Desktop) -->
+                <div class="hidden md:block">
+                    <a href="#contact" class="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-600 group-hover:from-cyan-500 group-hover:to-blue-600 text-white focus:ring-4 focus:outline-none focus:ring-cyan-800 transition-all duration-300">
+                        <span class="relative px-5 py-2 transition-all ease-in duration-75 bg-dark-950 rounded-md group-hover:bg-opacity-0">
+                            Hire Me
+                        </span>
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Toggle Button -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-slate-400 hover:text-white focus:outline-none p-2 rounded-md hover:bg-slate-800 transition-colors">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer Menu -->
+        <div id="mobile-menu" class="hidden md:hidden glass-panel border-t border-slate-800/80 px-4 pt-2 pb-4 space-y-2">
+            <a href="#hero" class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-all">Home</a>
+            <a href="#about" class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-all">About</a>
+            <a href="#skills" class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-all">Skills</a>
+            <a href="#projects" class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-all">Projects</a>
+            <a href="#contact" class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-all">Contact</a>
+            <a href="#contact" class="block text-center w-full px-4 py-2 mt-4 rounded-md bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold transition-all">Hire Me</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="relative min-h-screen flex items-center justify-center pt-24 pb-12 sm:pb-24 z-10 px-4">
+        <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            <!-- Hero Left: Content -->
+            <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                <div class="inline-flex items-center space-x-2 bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold tracking-wide uppercase">
+                    <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse mr-2"></span>Available For Freelance & Full-time
+                </div>
+                
+                <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight">
+                    Hey, I'm <span class="bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-500 bg-clip-text text-transparent">Musa</span>
+                </h1>
+                
+                <!-- Typing Text Container -->
+                <h2 class="text-xl sm:text-2xl md:text-3xl font-semibold text-slate-400 min-h-[40px]">
+                    I build <span id="typing-text" class="text-cyan-400 cursor-blink font-mono"></span>
+                </h2>
+                
+                <p class="text-base sm:text-lg text-slate-400 max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                    A Passionate full-stack web developer specializing in fast, clean, and highly secure cloud deployment. Turning ideas into responsive web architectures.
+                </p>
+                
+                <!-- Hero Action Buttons -->
+                <div class="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 pt-4">
+                    <a href="#projects" class="flex items-center justify-center px-6 py-3.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold rounded-lg shadow-lg hover:shadow-cyan-500/25 transition-all duration-300 transform hover:-translate-y-1">
+                        View Projects <i class="fa-solid fa-arrow-right ml-2 text-sm"></i>
+                    </a>
+                    <a href="#contact" class="flex items-center justify-center px-6 py-3.5 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white font-semibold rounded-lg border border-slate-700 hover:border-slate-500 transition-all duration-300 transform hover:-translate-y-1">
+                        Get In Touch <i class="fa-solid fa-envelope ml-2 text-sm"></i>
+                    </a>
+                </div>
+                
+                <!-- Trust Badges -->
+                <div class="pt-8 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-slate-500 text-xs uppercase tracking-widest font-bold">
+                    <span><i class="fa-brands fa-github text-lg mr-1 text-slate-400"></i> Git Native</span>
+                    <span><i class="fa-solid fa-cloud text-lg mr-1 text-slate-400"></i> Cloudflare Deployed</span>
+                    <span><i class="fa-solid fa-shield-halved text-lg mr-1 text-slate-400"></i> SSL Certified</span>
+                </div>
+            </div>
+
+            <!-- Hero Right: Interactive Code Display -->
+            <div class="lg:col-span-5 relative mt-6 lg:mt-0">
+                <div class="absolute -inset-1 rounded-2xl bg-gradient-to-r from-cyan-500 to-indigo-500 opacity-25 blur-xl"></div>
+                <div class="relative glass-panel rounded-xl overflow-hidden shadow-2xl border border-slate-800">
+                    <!-- Titlebar -->
+                    <div class="bg-slate-900/90 px-4 py-3 flex items-center justify-between border-b border-slate-800">
+                        <div class="flex space-x-2">
+                            <span class="w-3 h-3 rounded-full bg-red-500 inline-block"></span>
+                            <span class="w-3 h-3 rounded-full bg-yellow-500 inline-block"></span>
+                            <span class="w-3 h-3 rounded-full bg-green-500 inline-block"></span>
+                        </div>
+                        <span class="text-xs text-slate-400 font-mono">musa.js</span>
+                        <span class="text-slate-500"><i class="fa-solid fa-code text-xs"></i></span>
+                    </div>
+                    <!-- Code content -->
+                    <div class="p-6 font-mono text-xs sm:text-sm overflow-x-auto leading-relaxed text-cyan-300">
+                        <p class="text-slate-500">// My identity object</p>
+                        <p><span class="text-pink-400">const</span> developer = {</p>
+                        <p class="pl-4">name: <span class="text-emerald-400">"Musa"</span>,</p>
+                        <p class="pl-4">role: <span class="text-emerald-400">"Full Stack Web Developer"</span>,</p>
+                        <p class="pl-4">techStack: [</p>
+                        <p class="pl-8"><span class="text-emerald-400">"HTML5/CSS3"</span>, <span class="text-emerald-400">"TailwindCSS"</span>,</p>
+                        <p class="pl-8"><span class="text-emerald-400">"JavaScript (ES6+)"</span>, <span class="text-emerald-400">"React"</span>,</p>
+                        <p class="pl-8"><span class="text-emerald-400">"Node.js"</span>, <span class="text-emerald-400">"Cloudflare Services"</span></p>
+                        <p class="pl-4">],</p>
+                        <p class="pl-4">passion: <span class="text-emerald-400">"Building High-Speed Web Solutions"</span>,</p>
+                        <p class="pl-4">coffeeLover: <span class="text-yellow-400">true</span>,</p>
+                        <p class="pl-4">status: <span class="text-emerald-400">"Ready for new projects"</span></p>
+                        <p>};</p>
+                        <p class="text-slate-500 mt-4">// Looking for a beautiful custom domain?</p>
+                        <p><span class="text-pink-400">if</span> (developer.status === <span class="text-emerald-400">"Ready"</span>) {</p>
+                        <p class="pl-4 text-indigo-400">connectCustomDomain(<span class="text-yellow-400">"musa.is-a.dev"</span>);</p>
+                        <p>}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 relative z-10 bg-slate-950/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-3xl sm:text-4xl font-extrabold bg-gradient-to-r from-cyan-400 to-indigo-500 bg-clip-text text-transparent mb-4">About Me</h2>
+                <div class="w-16 h-1 bg-gradient-to-r from-cyan-400 to-indigo-500 mx-auto rounded"></div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <!-- Left: Illustration / Abstract Card -->
+                <div class="flex justify-center order-2 lg:order-1">
+                    <div class="relative w-72 h-72 sm:w-80 sm:h-80 bg-gradient-to-br from-indigo-500 to-cyan-400 rounded-3xl p-1 shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-500">
+                        <div class="w-full h-full bg-slate-950 rounded-[22px] flex flex-col justify-center items-center p-6 text-center">
+                            <i class="fa-solid fa-laptop-code text-5xl sm:text-6xl text-cyan-400 mb-6 animate-bounce"></i>
+                            <h3 class="text-xl sm:text-2xl font-bold mb-2">Constant Learner</h3>
+                            <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">I love debugging complex UI challenges and pushing standard static files into lightning-fast cloud delivery engines.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Bio Content -->
+                <div class="space-y-6 order-1 lg:order-2">
+                    <h3 class="text-2xl font-bold text-slate-200">Hi, I build premium performance websites.</h3>
+                    <p class="text-slate-400 leading-relaxed">
+                        I am Musa, a developer based in Pakistan. I thrive on the bleeding edge of modern frontend engineering. I use Tailwind CSS for highly responsive styling, Javascript for responsive states, and Vercel/Cloudflare Pages for instant content delivery networks (CDNs).
+                    </p>
+                    <p class="text-slate-400 leading-relaxed">
+                        I enjoy writing code from scratch and optimizing deployment. My goal is to create interactive websites that deliver rich experiences across smartphones, tablets, and desktops.
+                    </p>
+                    
+                    <div class="grid grid-cols-2 gap-4 pt-4">
+                        <div class="p-4 glass-panel rounded-lg">
+                            <h4 class="text-cyan-400 text-2xl font-black">99.9%</h4>
+                            <p class="text-slate-400 text-xs uppercase tracking-wide">Uptime Standards</p>
+                        </div>
+                        <div class="p-4 glass-panel rounded-lg">
+                            <h4 class="text-indigo-400 text-2xl font-black">Fast</h4>
+                            <p class="text-slate-400 text-xs uppercase tracking-wide">Lighthouse Scores</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-20 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-3xl sm:text-4xl font-extrabold bg-gradient-to-r from-cyan-400 to-indigo-500 bg-clip-text text-transparent mb-4">Core Technology Stack</h2>
+                <p class="text-slate-400 text-sm sm:text-base">Technologies that I use to bring modern dynamic mockups to life.</p>
+                <div class="w-16 h-1 bg-gradient-to-r from-cyan-400 to-indigo-500 mx-auto mt-4 rounded"></div>
+            </div>
+
+            <!-- Skills Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+                
+                <!-- Skill Card 1: HTML5 -->
+                <div class="glass-panel p-6 rounded-xl hover:border-orange-500/30 transition-all duration-300 transform hover:-translate-y-1 text-center group">
+                    <i class="fa-brands fa-html5 text-4xl text-orange-500 group-hover:scale-110 transition-transform mb-3"></i>
+                    <h3 class="font-bold text-sm sm:text-base">HTML5</h3>
+                    <span class="text-slate-500 text-xs">Standard Semantics</span>
+                </div>
+
+                <!-- Skill Card 2: CSS3 -->
+                <div class="glass-panel p-6 rounded-xl hover:border-blue-500/30 transition-all duration-300 transform hover:-translate-y-1 text-center group">
+                    <i class="fa-brands fa-css3-alt text-4xl text-blue-500 group-hover:scale-110 transition-transform mb-3"></i>
+                    <h3 class="font-bold text-sm sm:text-base">CSS3</h3>
+                    <span class="text-slate-500 text-xs">Custom Layouts</span>
+                </div>
+
+                <!-- Skill Card 3: JavaScript -->
+                <div class="glass-panel p-6 rounded-xl hover:border-yellow-500/30 transition-all duration-300 transform hover:-translate-y-1 text-center group">
+                    <i class="fa-brands fa-js text-4xl text-yellow-500 group-hover:scale-110 transition-transform mb-3"></i>
+                    <h3 class="font-bold text-sm sm:text-base">JavaScript</h3>
+                    <span class="text-slate-500 text-xs">ES6+ Programming</span>
+                </div>
+
+                <!-- Skill Card 4: Tailwind CSS -->
+                <div class="glass-panel p-6 rounded-xl hover:border-cyan-400/30 transition-all duration-300 transform hover:-translate-y-1 text-center group">
+                    <i class="fa-solid fa-wind text-4xl text-cyan-400 group-hover:scale-110 transition-transform mb-3"></i>
+                    <h3 class="font-bold text-sm sm:text-base">Tailwind CSS</h3>
+                    <span class="text-slate-500 text-xs">Responsive Design</span>
+                </div>
+
+                <!-- Skill Card 5: React -->
+                <div class="glass-panel p-6 rounded-xl hover:border-cyan-500/30 transition-all duration-300 transform hover:-translate-y-1 text-center group">
+                    <i class="fa-brands fa-react text-4xl text-cyan-500 group-hover:scale-110 transition-transform mb-3"></i>
+                    <h3 class="font-bold text-sm sm:text-base">React JS</h3>
+                    <span class="text-slate-500 text-xs">Dynamic UI Architecture</span>
+                </div>
+
+                <!-- Skill Card 6: Git & GitHub -->
+                <div class="glass-panel p-6 rounded-xl hover:border-purple-500/30 transition-all duration-300 transform hover:-translate-y-1 text-center group">
+                    <i class="fa-brands fa-github text-4xl text-purple-400 group-hover:scale-110 transition-transform mb-3"></i>
+                    <h3 class="font-bold text-sm sm:text-base">Git / GitHub</h3>
+                    <span class="text-slate-500 text-xs">Version Control & PRs</span>
+                </div>
+
+                <!-- Skill Card 7: Node.js -->
+                <div class="glass-panel p-6 rounded-xl hover:border-green-500/30 transition-all duration-300 transform hover:-translate-y-1 text-center group">
+                    <i class="fa-brands fa-node-js text-4xl text-green-500 group-hover:scale-110 transition-transform mb-3"></i>
+                    <h3 class="font-bold text-sm sm:text-base">Node.js</h3>
+                    <span class="text-slate-500 text-xs">Backend & APIs</span>
+                </div>
+
+                <!-- Skill Card 8: Cloudflare -->
+                <div class="glass-panel p-6 rounded-xl hover:border-orange-400/30 transition-all duration-300 transform hover:-translate-y-1 text-center group">
+                    <i class="fa-solid fa-cloud-sun text-4xl text-orange-400 group-hover:scale-110 transition-transform mb-3"></i>
+                    <h3 class="font-bold text-sm sm:text-base">Cloudflare</h3>
+                    <span class="text-slate-500 text-xs">Hosting & DNS Setup</span>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-20 relative z-10 bg-slate-950/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-3xl sm:text-4xl font-extrabold bg-gradient-to-r from-cyan-400 to-indigo-500 bg-clip-text text-transparent mb-4">Featured Work</h2>
+                <p class="text-slate-400 text-sm sm:text-base">A selection of recent projects built with modern frontend frameworks.</p>
+                <div class="w-16 h-1 bg-gradient-to-r from-cyan-400 to-indigo-500 mx-auto mt-4 rounded"></div>
+            </div>
+
+            <!-- Filters -->
+            <div class="flex justify-center space-x-4 mb-12">
+                <button class="filter-btn px-4 py-2 rounded-full text-xs sm:text-sm font-semibold glass-panel border border-cyan-500 text-cyan-400 transition-all" data-filter="all">All</button>
+                <button class="filter-btn px-4 py-2 rounded-full text-xs sm:text-sm font-semibold glass-panel border border-transparent text-slate-400 hover:text-white transition-all" data-filter="frontend">Frontend</button>
+                <button class="filter-btn px-4 py-2 rounded-full text-xs sm:text-sm font-semibold glass-panel border border-transparent text-slate-400 hover:text-white transition-all" data-filter="backend">Backend</button>
+            </div>
+
+            <!-- Projects Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="projects-grid">
+                
+                <!-- Project 1: Frontend -->
+                <div class="project-card glass-panel rounded-xl overflow-hidden border border-slate-800/80 hover:border-cyan-500/30 transition-all duration-300 transform hover:-translate-y-2" data-category="frontend">
+                    <div class="relative h-48 bg-slate-900 flex items-center justify-center text-slate-700">
+                        <i class="fa-solid fa-wallet text-6xl text-cyan-500/20"></i>
+                        <span class="absolute top-4 right-4 bg-cyan-500/10 text-cyan-400 text-xs px-2.5 py-1 rounded-full font-semibold border border-cyan-500/20">Frontend</span>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <h3 class="text-xl font-bold text-slate-100">Crypto Dashboard</h3>
+                        <p class="text-sm text-slate-400">A live responsive crypto tracking and monitoring dashboard utilizing real-time API integrations.</p>
+                        <div class="flex flex-wrap gap-2 pt-2 text-xs font-semibold text-cyan-300">
+                            <span class="bg-cyan-950/50 border border-cyan-800/50 px-2 py-1 rounded">React</span>
+                            <span class="bg-cyan-950/50 border border-cyan-800/50 px-2 py-1 rounded">Tailwind CSS</span>
+                            <span class="bg-cyan-950/50 border border-cyan-800/50 px-2 py-1 rounded">API Docs</span>
+                        </div>
+                        <div class="flex space-x-4 pt-4 border-t border-slate-800/80">
+                            <a href="#" class="text-xs text-cyan-400 hover:text-cyan-300 flex items-center font-bold">Live Demo <i class="fa-solid fa-up-right-from-square ml-1"></i></a>
+                            <a href="#" class="text-xs text-slate-400 hover:text-slate-300 flex items-center font-bold">Code <i class="fa-brands fa-github ml-1"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2: Backend -->
+                <div class="project-card glass-panel rounded-xl overflow-hidden border border-slate-800/80 hover:border-cyan-500/30 transition-all duration-300 transform hover:-translate-y-2" data-category="backend">
+                    <div class="relative h-48 bg-slate-900 flex items-center justify-center text-slate-700">
+                        <i class="fa-solid fa-database text-6xl text-indigo-500/20"></i>
+                        <span class="absolute top-4 right-4 bg-indigo-500/10 text-indigo-400 text-xs px-2.5 py-1 rounded-full font-semibold border border-indigo-500/20">Backend</span>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <h3 class="text-xl font-bold text-slate-100">Task Management API</h3>
+                        <p class="text-sm text-slate-400">High performance secure backend server for dynamic task planning complete with secure user JWT auth flow.</p>
+                        <div class="flex flex-wrap gap-2 pt-2 text-xs font-semibold text-indigo-300">
+                            <span class="bg-indigo-950/50 border border-indigo-800/50 px-2 py-1 rounded">Node.js</span>
+                            <span class="bg-indigo-950/50 border border-indigo-800/50 px-2 py-1 rounded">Express</span>
+                            <span class="bg-indigo-950/50 border border-indigo-800/50 px-2 py-1 rounded">MongoDB</span>
+                        </div>
+                        <div class="flex space-x-4 pt-4 border-t border-slate-800/80">
+                            <a href="#" class="text-xs text-indigo-400 hover:text-indigo-300 flex items-center font-bold">API Docs <i class="fa-solid fa-up-right-from-square ml-1"></i></a>
+                            <a href="#" class="text-xs text-slate-400 hover:text-slate-300 flex items-center font-bold">Code <i class="fa-brands fa-github ml-1"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3: Frontend -->
+                <div class="project-card glass-panel rounded-xl overflow-hidden border border-slate-800/80 hover:border-cyan-500/30 transition-all duration-300 transform hover:-translate-y-2" data-category="frontend">
+                    <div class="relative h-48 bg-slate-900 flex items-center justify-center text-slate-700">
+                        <i class="fa-solid fa-cubes text-6xl text-cyan-500/20"></i>
+                        <span class="absolute top-4 right-4 bg-cyan-500/10 text-cyan-400 text-xs px-2.5 py-1 rounded-full font-semibold border border-cyan-500/20">Frontend</span>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <h3 class="text-xl font-bold text-slate-100">SaaS Landing Page</h3>
+                        <p class="text-sm text-slate-400">SEO optimized high conversions interactive marketing template for AI analytics software platform.</p>
+                        <div class="flex flex-wrap gap-2 pt-2 text-xs font-semibold text-cyan-300">
+                            <span class="bg-cyan-950/50 border border-cyan-800/50 px-2 py-1 rounded">HTML/CSS</span>
+                            <span class="bg-cyan-950/50 border border-cyan-800/50 px-2 py-1 rounded">Tailwind</span>
+                            <span class="bg-cyan-950/50 border border-cyan-800/50 px-2 py-1 rounded">JS Motion</span>
+                        </div>
+                        <div class="flex space-x-4 pt-4 border-t border-slate-800/80">
+                            <a href="#" class="text-xs text-cyan-400 hover:text-cyan-300 flex items-center font-bold">Live Demo <i class="fa-solid fa-up-right-from-square ml-1"></i></a>
+                            <a href="#" class="text-xs text-slate-400 hover:text-slate-300 flex items-center font-bold">Code <i class="fa-brands fa-github ml-1"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 relative z-10 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-3xl sm:text-4xl font-extrabold bg-gradient-to-r from-cyan-400 to-indigo-500 bg-clip-text text-transparent mb-4">Get In Touch</h2>
+                <p class="text-slate-400 text-sm sm:text-base">Let's discuss how we can scale your website onto a custom domain.</p>
+                <div class="w-16 h-1 bg-gradient-to-r from-cyan-400 to-indigo-500 mx-auto mt-4 rounded"></div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-stretch max-w-5xl mx-auto">
+                <!-- Info Section -->
+                <div class="lg:col-span-5 flex flex-col justify-between space-y-8 glass-panel p-8 rounded-2xl border border-slate-800/80">
+                    <div class="space-y-6">
+                        <h3 class="text-xl font-bold text-slate-100">Contact Information</h3>
+                        <p class="text-slate-400 text-sm">Have an active development project or want to register an alias? Message me right now.</p>
+                        
+                        <div class="space-y-4 pt-4">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-10 h-10 rounded-full bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
+                                    <i class="fa-solid fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-slate-500">EMAIL</p>
+                                    <p class="text-sm font-semibold text-slate-300">musa@is-a.dev</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center space-x-4">
+                                <div class="w-10 h-10 rounded-full bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center text-indigo-400">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-slate-500">LOCATION</p>
+                                    <p class="text-sm font-semibold text-slate-300">Pakistan</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Social Icons -->
+                    <div class="pt-6 border-t border-slate-800/80 flex space-x-4">
+                        <a href="https://github.com" target="_blank" class="w-10 h-10 rounded-lg bg-slate-900 border border-slate-800 hover:border-cyan-500 flex items-center justify-center text-slate-400 hover:text-cyan-400 transition-all">
+                            <i class="fa-brands fa-github text-lg"></i>
+                        </a>
+                        <a href="https://linkedin.com" target="_blank" class="w-10 h-10 rounded-lg bg-slate-900 border border-slate-800 hover:border-cyan-500 flex items-center justify-center text-slate-400 hover:text-cyan-400 transition-all">
+                            <i class="fa-brands fa-linkedin-in text-lg"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-lg bg-slate-900 border border-slate-800 hover:border-cyan-500 flex items-center justify-center text-slate-400 hover:text-cyan-400 transition-all">
+                            <i class="fa-brands fa-twitter text-lg"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Form Section -->
+                <div class="lg:col-span-7 glass-panel p-8 rounded-2xl border border-slate-800/80">
+                    <form id="portfolio-contact-form" class="space-y-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2" for="name">Your Name</label>
+                                <input type="text" id="name" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-3 text-slate-100 text-sm focus:outline-none focus:border-cyan-500 transition-all" placeholder="John Doe">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2" for="email">Email Address</label>
+                                <input type="email" id="email" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-3 text-slate-100 text-sm focus:outline-none focus:border-cyan-500 transition-all" placeholder="john@example.com">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2" for="subject">Subject</label>
+                            <input type="text" id="subject" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-3 text-slate-100 text-sm focus:outline-none focus:border-cyan-500 transition-all" placeholder="Domain Registration Setup">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2" for="message">Project Description / Message</label>
+                            <textarea id="message" rows="4" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-3 text-slate-100 text-sm focus:outline-none focus:border-cyan-500 transition-all" placeholder="Hi Musa, I have a repo that I want to deploy to Cloudflare Pages..."></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full py-4 px-6 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold rounded-lg shadow-lg hover:shadow-cyan-500/25 transition-all duration-300 transform hover:-translate-y-0.5">
+                            Send Message <i class="fa-solid fa-paper-plane ml-2"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Custom Success Modal (No alerts) -->
+    <div id="success-modal" class="fixed inset-0 bg-dark-950/80 backdrop-blur-md flex items-center justify-center z-50 hidden opacity-0 transition-opacity duration-300">
+        <div class="glass-panel p-8 rounded-2xl border border-emerald-500/30 max-w-sm w-full text-center space-y-6 mx-4 transform scale-95 transition-transform duration-300" id="modal-card">
+            <div class="w-16 h-16 bg-emerald-500/10 border border-emerald-500/30 rounded-full flex items-center justify-center text-emerald-400 text-3xl mx-auto animate-pulse">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <div class="space-y-2">
+                <h3 class="text-2xl font-bold text-slate-100">Message Sent!</h3>
+                <p class="text-slate-400 text-sm">Thank you for getting in touch. Musa will get back to you shortly.</p>
+            </div>
+            <button id="close-modal" class="w-full py-3 bg-slate-900 border border-slate-800 hover:border-emerald-500/30 text-emerald-400 font-bold rounded-lg transition-all">
+                Dismiss
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-12 relative z-10 border-t border-slate-900 bg-slate-950/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <p class="text-sm text-slate-500 text-center sm:text-left">
+                &copy; 2026 Musa. All rights reserved.
+            </p>
+            <p class="text-sm text-slate-500 text-center sm:text-right flex items-center justify-center">
+                Deploys instantly on <i class="fa-solid fa-cloud text-orange-400 mx-1.5 text-xs"></i> Cloudflare
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Typing Animation Logic
+        const words = ["Web Applications.", "Secure Cloud Deployments.", "Fast Portfolios.", "Interactive Designs."];
+        let wordIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const typingSpeed = 100;
+        const erasingSpeed = 50;
+        const delayBetweenWords = 2000;
+        const typingSpan = document.getElementById('typing-text');
+
+        function type() {
+            const currentWord = words[wordIndex];
+            if (isDeleting) {
+                typingSpan.textContent = currentWord.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typingSpan.textContent = currentWord.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            let typeDelay = isDeleting ? erasingSpeed : typingSpeed;
+
+            if (!isDeleting && charIndex === currentWord.length) {
+                typeDelay = delayBetweenWords;
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                wordIndex = (wordIndex + 1) % words.length;
+                typeDelay = 500;
+            }
+
+            setTimeout(type, typeDelay);
+        }
+
+        // Mobile Menu Logic
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Hide Mobile Menu when clicking a link
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Portfolio Filter Logic
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const projectCards = document.querySelectorAll('.project-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Update active classes
+                filterBtns.forEach(b => {
+                    b.classList.remove('border-cyan-500', 'text-cyan-400');
+                    b.classList.add('border-transparent', 'text-slate-400');
+                });
+                btn.classList.add('border-cyan-500', 'text-cyan-400');
+                btn.classList.remove('border-transparent', 'text-slate-400');
+
+                const filter = btn.getAttribute('data-filter');
+
+                projectCards.forEach(card => {
+                    if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Contact Form Custom Success Handling
+        const contactForm = document.getElementById('portfolio-contact-form');
+        const successModal = document.getElementById('success-modal');
+        const modalCard = document.getElementById('modal-card');
+        const closeModal = document.getElementById('close-modal');
+
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Show custom success modal
+            successModal.classList.remove('hidden');
+            setTimeout(() => {
+                successModal.classList.remove('opacity-0');
+                modalCard.classList.remove('scale-95');
+            }, 10);
+
+            // Clear input fields
+            contactForm.reset();
+        });
+
+        closeModal.addEventListener('click', () => {
+            successModal.classList.add('opacity-0');
+            modalCard.classList.add('scale-95');
+            setTimeout(() => {
+                successModal.classList.add('hidden');
+            }, 300);
+        });
+
+        // Smooth Scroll Event Listener for Sticky Header
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('py-2', 'bg-dark-950/90');
+                navbar.classList.remove('sm:py-0');
+            } else {
+                navbar.classList.remove('py-2', 'bg-dark-950/90');
+            }
+        });
+
+        // Start typing animation on window load
+        window.onload = function() {
+            type();
+        };
+    </script>
+</body>
+</html>
