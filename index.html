@@ -92,7 +92,6 @@
 </head>
 <body class="text-slate-100 antialiased relative min-h-screen">
 
-    <!-- Glowing Accents -->
     <div class="glow-sphere bg-indigo-500 w-[400px] h-[400px] top-12 left-[-100px]"></div>
     <div class="glow-sphere bg-cyan-500 w-[500px] h-[500px] bottom-20 right-[-100px]"></div>
     <div class="glow-sphere bg-purple-500 w-[300px] h-[300px] top-[40%] left-[30%]"></div>
@@ -496,26 +495,27 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                             <div>
                                 <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2" for="name">Your Name</label>
-                                <input type="text" id="name" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-3 text-slate-100 text-sm focus:outline-none focus:border-cyan-500 transition-all" placeholder="John Doe">
+                                <input type="text" id="name" name="name" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-3 text-slate-100 text-sm focus:outline-none focus:border-cyan-500 transition-all" placeholder="John Doe">
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2" for="email">Email Address</label>
-                                <input type="email" id="email" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-3 text-slate-100 text-sm focus:outline-none focus:border-cyan-500 transition-all" placeholder="john@example.com">
+                                <input type="email" id="email" name="email" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-3 text-slate-100 text-sm focus:outline-none focus:border-cyan-500 transition-all" placeholder="john@example.com">
                             </div>
                         </div>
 
                         <div>
                             <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2" for="subject">Subject</label>
-                            <input type="text" id="subject" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-3 text-slate-100 text-sm focus:outline-none focus:border-cyan-500 transition-all" placeholder="Domain Registration Setup">
+                            <input type="text" id="subject" name="subject" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-3 text-slate-100 text-sm focus:outline-none focus:border-cyan-500 transition-all" placeholder="Domain Registration Setup">
                         </div>
 
                         <div>
                             <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2" for="message">Project Description / Message</label>
-                            <textarea id="message" rows="4" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-3 text-slate-100 text-sm focus:outline-none focus:border-cyan-500 transition-all" placeholder="Hi Musa, I want to deploy a responsive database portal on Cloudflare..."></textarea>
+                            <textarea id="message" name="message" rows="4" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-3 text-slate-100 text-sm focus:outline-none focus:border-cyan-500 transition-all" placeholder="Hi Musa, I want to deploy a responsive database portal on Cloudflare..."></textarea>
                         </div>
 
-                        <button type="submit" class="w-full py-4 px-6 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold rounded-lg shadow-lg hover:shadow-cyan-500/25 transition-all duration-300 transform hover:-translate-y-0.5">
-                            Send Message <i class="fa-solid fa-paper-plane ml-2"></i>
+                        <button type="submit" id="submit-btn" class="w-full py-4 px-6 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold rounded-lg shadow-lg hover:shadow-cyan-500/25 transition-all duration-300 transform hover:-translate-y-0.5 flex justify-center items-center">
+                            <span id="btn-text">Send Message</span>
+                            <i id="btn-icon" class="fa-solid fa-paper-plane ml-2"></i>
                         </button>
                     </form>
                 </div>
@@ -628,24 +628,62 @@
             });
         });
 
-        // Contact Form Custom Success Handling
+        // Contact Form Custom Web3Forms Submission Logic (No Redirects)
         const contactForm = document.getElementById('portfolio-contact-form');
         const successModal = document.getElementById('success-modal');
         const modalCard = document.getElementById('modal-card');
         const closeModal = document.getElementById('close-modal');
+        const submitBtn = document.getElementById('submit-btn');
+        const btnText = document.getElementById('btn-text');
+        const btnIcon = document.getElementById('btn-icon');
+
+        // Dynamic Access Key configuration integrated securely
+        const ACCESS_KEY = "e619a881-5e85-4c19-84d0-73410079f035";
 
         contactForm.addEventListener('submit', (e) => {
             e.preventDefault();
             
-            // Show custom success modal
-            successModal.classList.remove('hidden');
-            setTimeout(() => {
-                successModal.classList.remove('opacity-0');
-                modalCard.classList.remove('scale-95');
-            }, 10);
+            // Set Loading UI state
+            btnText.textContent = "Sending...";
+            btnIcon.className = "fa-solid fa-spinner animate-spin ml-2";
+            submitBtn.disabled = true;
 
-            // Clear input fields
-            contactForm.reset();
+            // Prepare dynamic fields payload for API
+            const formData = new FormData(contactForm);
+            formData.append("access_key", ACCESS_KEY);
+
+            // POST asynchronously to Web3Forms Gateway API
+            fetch("https://api.web3forms.com/submit", {
+                method: "POST",
+                body: formData
+            })
+            .then(async (response) => {
+                let json = await response.json();
+                if (response.status == 200) {
+                    // Show custom success modal
+                    successModal.classList.remove('hidden');
+                    setTimeout(() => {
+                        successModal.classList.remove('opacity-0');
+                        modalCard.classList.remove('scale-95');
+                    }, 10);
+                    // Reset input fields
+                    contactForm.reset();
+                } else {
+                    // Fallback error messaging
+                    console.log(json);
+                    alert("Something went wrong! Please try again.");
+                }
+            })
+            .catch(error => {
+                console.log(error);
+                alert("Network error! Please check your internet connection.");
+            })
+            .then(() => {
+                // Restore button state
+                btnText.textContent = "Send Message";
+                btnIcon.className = "fa-solid fa-paper-plane ml-2";
+                submitBtn.disabled = false;
+            });
         });
 
         closeModal.addEventListener('click', () => {
